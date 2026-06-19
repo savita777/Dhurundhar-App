@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 #  .github/workflows/build-apk.yml
-#  DHURANDHAR (2025) — Android APK Build Pipeline (Stable Version)
+#  DHURANDHAR (2025) — Official Kivy Buildozer Pipeline
 # ═══════════════════════════════════════════════════════════════════════════════
 
 name: "📱 Build Dhurandhar APK"
@@ -9,68 +9,26 @@ on:
   push:
     branches:
       - "**"
-  pull_request:
-    branches:
-      - main
-      - master
 
 jobs:
   build-apk:
-    name: "🔨 Buildozer — Android Debug APK"
-    runs-on: ubuntu-22.04
-    timeout-minutes: 90
+    name: "🔨 Kivy Official Buildozer"
+    runs-on: ubuntu-latest
 
     steps:
       - name: "📦 Checkout repository"
         uses: actions/checkout@v4
 
-      - name: "🐍 Set up Python 3.10"
-        uses: actions/setup-python@v5
+      - name: "🏗️ Run Official Buildozer Action"
+        uses: kivy/buildozer-action@v2
         with:
-          python-version: "3.10"
-
-      - name: "☕ Set up Java 17 (Temurin)"
-        uses: actions/setup-java@v4
-        with:
-          java-version: "17"
-          distribution: "temurin"
-
-      - name: "📥 Install system dependencies"
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y \
-            build-essential git wget curl unzip zip cmake autoconf libtool \
-            pkg-config python3-pip python3-setuptools libssl-dev libffi-dev \
-            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
-            ffmpeg libswscale-dev libavformat-dev libavcodec-dev libportmidi-dev \
-            libglew-dev libncurses5-dev libncursesw5-dev zlib1g-dev
-
-      - name: "📦 Install Buildozer and Cython (Fixed Versions)"
-        run: |
-          # Kivy android build ke liye stable packages zaroori hain
-          pip3 install --upgrade "pip" "setuptools<70" wheel virtualenv
-          pip3 install buildozer "Cython==0.29.33"
-
-      - name: "💾 Cache Buildozer global directory"
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.buildozer
-            ~/.gradle/caches
-          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
-          restore-keys: |
-            ${{ runner.os }}-buildozer-
-
-      - name: "🏗️ Run Buildozer — android debug"
-        run: |
-          buildozer -v android debug 2>&1
-          ls -lh bin/ || (echo "❌  bin/ directory not found" && exit 1)
+          command: buildozer android debug
+          buildozer_version: master
 
       - name: "📤 Upload APK artifact"
         uses: actions/upload-artifact@v4
         with:
           name: "dhurandhar-debug-apk"
-          path: "bin/*.apk"
-          retention-days: 30
+          path: bin/*.apk
           if-no-files-found: error
           
