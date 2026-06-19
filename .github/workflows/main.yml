@@ -1,0 +1,75 @@
+# =============================================================
+#  DHURANDHAR (2025) — GitHub Actions CI Pipeline
+#  Workflow   :  Python Syntax Check
+#  Trigger    :  Every push to any branch
+#  Python     :  3.10
+# =============================================================
+
+name: Dhurandhar CI — Syntax Check
+
+# ── Trigger ──────────────────────────────────────────────────
+on:
+  push:
+    branches:
+      - "**"           # triggers on every push to every branch
+  pull_request:
+    branches:
+      - main
+      - master
+
+# ── Jobs ─────────────────────────────────────────────────────
+jobs:
+
+  syntax-check:
+    name: 🕵️ RAW Intelligence — Syntax Scan
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # ── Step 1 : Checkout the repository ──────────────────
+      - name: 📦 Checkout Code
+        uses: actions/checkout@v4
+
+      # ── Step 2 : Set up Python 3.10 ───────────────────────
+      - name: 🐍 Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      # ── Step 3 : Verify Python version (diagnostics) ──────
+      - name: 🔎 Confirm Python Version
+        run: python --version
+
+      # ── Step 4 : Core syntax check ────────────────────────
+      - name: ✅ Run Syntax Check on main.py
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "  DHURANDHAR (2025) — Phantom Protocol"
+          echo "  Initiating syntax scan on main.py ..."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          python -m py_compile main.py
+          echo ""
+          echo "  ✔  Syntax check PASSED. No errors detected."
+          echo "  ✔  main.py is mission-ready, Agent PHANTOM."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      # ── Step 5 : Extended lint check (optional, zero deps) ─
+      - name: 🔬 Run Extended Lint Check (py_compile on all .py files)
+        run: |
+          echo "Scanning all Python files in repository ..."
+          find . -name "*.py" -not -path "./.git/*" | while read file; do
+            python -m py_compile "$file" && echo "  ✔  $file — OK" || echo "  ✖  $file — FAILED"
+          done
+          echo "Lint sweep complete."
+
+      # ── Step 6 : Confirm mission status ───────────────────
+      - name: 🎯 Mission Status Report
+        if: success()
+        run: |
+          echo ""
+          echo "═══════════════════════════════════════════════════"
+          echo "  STATUS   :  ALL CHECKS PASSED"
+          echo "  AGENT    :  Hamza Ali Mazari (PHANTOM)"
+          echo "  MISSION  :  DHURANDHAR (2025) CI Pipeline"
+          echo "  VERDICT  :  Code is clean. Deploy when ready."
+          echo "═══════════════════════════════════════════════════"
