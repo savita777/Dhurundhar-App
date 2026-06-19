@@ -1,6 +1,6 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 #  .github/workflows/build-apk.yml
-#  DHURANDHAR (2025) — Android APK Build Pipeline
+#  DHURANDHAR (2025) — Android APK Build Pipeline (Stable Version)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 name: "📱 Build Dhurandhar APK"
@@ -39,38 +39,17 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y \
-            build-essential \
-            git \
-            wget \
-            curl \
-            unzip \
-            zip \
-            cmake \
-            autoconf \
-            libtool \
-            pkg-config \
-            python3-pip \
-            python3-setuptools \
-            libssl-dev \
-            libffi-dev \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            ffmpeg \
-            libswscale-dev \
-            libavformat-dev \
-            libavcodec-dev \
-            libportmidi-dev \
-            libglew-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            zlib1g-dev
+            build-essential git wget curl unzip zip cmake autoconf libtool \
+            pkg-config python3-pip python3-setuptools libssl-dev libffi-dev \
+            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev \
+            ffmpeg libswscale-dev libavformat-dev libavcodec-dev libportmidi-dev \
+            libglew-dev libncurses5-dev libncursesw5-dev zlib1g-dev
 
-      - name: "📦 Install Buildozer and Cython"
+      - name: "📦 Install Buildozer and Cython (Fixed Versions)"
         run: |
-          pip3 install --upgrade pip setuptools wheel
-          pip3 install buildozer cython
+          # Kivy android build ke liye stable packages zaroori hain
+          pip3 install --upgrade "pip" "setuptools<70" wheel virtualenv
+          pip3 install buildozer "Cython==0.29.33"
 
       - name: "💾 Cache Buildozer global directory"
         uses: actions/cache@v4
