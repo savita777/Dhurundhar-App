@@ -42,7 +42,7 @@ android.permissions = INTERNET
 # ── Android SDK / NDK Targeting ───────────────────────────────────────────────
 # Google Play requires targetSdkVersion >= 33 as of 2024
 android.api     = 33
-android.minapi  = 21          # Android 5.0 Lollipop+   (covers ~99 % of devices)
+android.minapi  = 21          # Android 5.0 Lollipop+   (covers ~99 %% of devices)
 
 # NDK 25b is the last version supported by all current p4a recipes
 android.ndk     = 25b
